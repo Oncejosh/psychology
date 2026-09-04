@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Career Transition Platform — Bestlink College of the Philippines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Style.css">
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- ===================== LOGIN ===================== -->
+<section id="view-login" class="auth-screen">
+  <div class="auth-screen-decor" aria-hidden="true"></div>
+  <div class="wrap" style="max-width:420px; position:relative;">
+    <div class="auth-card-wrap">
+      <div class="auth-brand"><div class="auth-brand-mark">DC</div></div>
+      <div class="view-head" style="text-align:center; margin-bottom:22px;">
+        <p class="eyebrow">Digital Career Transition Platform</p>
+        <h2 id="auth-heading" style="font-size:1.6rem;">Log in to continue</h2>
+        <p id="auth-subtext">Your progress  assessments, resumes, goals  is saved to your account.</p>
+      </div>
+
+      <div class="auth-switch" role="tablist" aria-label="Choose log in or sign up">
+        <div class="auth-switch-thumb" id="auth-switch-thumb"></div>
+        <button type="button" class="auth-switch-btn active" id="auth-switch-login" role="tab" aria-selected="true">Log in</button>
+        <button type="button" class="auth-switch-btn" id="auth-switch-signup" role="tab" aria-selected="false">Sign up</button>
+      </div>
+
+      <div class="card auth-card">
+        <div class="field">
+          <label for="auth-email">Email</label>
+          <input type="text" id="auth-email" placeholder="you@email.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" placeholder="At least 6 characters" autocomplete="current-password">
+        </div>
+        <p id="auth-status" style="font-size:0.85rem; color:var(--danger); min-height:18px; margin-bottom:8px;"></p>
+        <button class="btn btn-primary" id="auth-submit" type="button" style="width:100%; text-align:center;">Log in</button>
+
+        <div class="auth-divider"><span>or</span></div>
+
+        <button class="btn btn-secondary" id="auth-google" type="button" style="width:100%; text-align:center;">Continue with Google</button>
+        <button class="btn btn-guest" id="auth-guest" type="button" style="width:100%; text-align:center;">Continue as Guest</button>
+        <p class="auth-guest-note">Trying it out for a survey or test run? Guest sessions skip account creation — your activity stays on this device only and won't be saved to the cloud.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="app-shell" style="display:none;">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="sidebar-logo-text">PSYCHOLOGY<span>Digital Career<br>Transition Platform</span></div></div>
+    <nav class="sidebar-nav" id="nav-tabs">
+      <div class="nav-indicator" id="nav-indicator"></div>
+      <button class="tab-btn active" data-view="dashboard">Dashboard</button>
+      <button class="tab-btn" data-view="assessment">Readiness Assessment</button>
+      <button class="tab-btn" data-view="interview">Mock Interview</button>
+      <button class="tab-btn" data-view="checker">Resume Checker</button>
+      <button class="tab-btn" data-view="tracker">Job Tracker</button>
+      <button class="tab-btn" data-view="typing">Workplace Typing Simulator</button>
+      <button class="tab-btn" data-view="wellness">Wellness Corner</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="nav-user" style="display:none;">
+        <span id="nav-user-email"></span>
+      </div>
+      <button class="sidebar-logout" id="nav-logout" type="button">
+        <svg viewBox="0 0 18 18" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15.5H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h3"/><path d="M12 12.5l3.5-3.5-3.5-3.5"/><path d="M15.5 9H7"/></svg>
+        <span class="tab-label">Log out</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="icon-btn" id="sidebar-toggle" type="button" title="Toggle sidebar" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 5h13M2.5 9h13M2.5 13h13"/></svg>
+      </button>
+      <h1 class="topbar-title" id="topbar-title">Dashboard</h1>
+      <label class="topbar-search" for="topbar-search-input">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="5.5"/><path d="M12.2 12.2 16 16"/></svg>
+        <input type="text" id="topbar-search-input" placeholder="Search anything…">
+      </label>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-clock" id="topbar-clock">
+        <span class="tc-time" id="topbar-clock-time"></span>
+        <span class="tc-date" id="topbar-clock-date"></span>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="theme-toggle" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <svg id="theme-icon-sun" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="9" r="3.4"/><path d="M9 1.6v1.7M9 14.7v1.7M16.4 9h-1.7M3.3 9H1.6M14.2 3.8l-1.2 1.2M4.9 12.9l-1.2 1.2M14.2 14.2l-1.2-1.2M4.9 5.1 3.7 3.9"/></svg>
+          <svg id="theme-icon-moon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M15.5 10.8A6.5 6.5 0 0 1 7.2 2.5a6.5 6.5 0 1 0 8.3 8.3z"/></svg>
+        </button>
+        <div class="notif-wrap">
+          <button class="icon-btn" id="notif-toggle" type="button" title="Notifications" aria-label="Notifications">
+            <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.2a5 5 0 0 1 10 0c0 3.6 1.3 4.6 1.3 4.6H2.7S4 10.8 4 7.2z"/><path d="M7.3 14.5a1.7 1.7 0 0 0 3.4 0"/></svg>
+            <span class="dot" id="notif-dot" style="display:none;"></span>
+          </button>
+          <div class="notif-panel" id="notif-panel">
+            <h4>Notifications</h4>
+            <div id="notif-list"></div>
+          </div>
+        </div>
+        <div class="topbar-avatar" id="topbar-avatar" role="button" tabindex="0" title="Account profile" aria-label="Open account profile" style="cursor:pointer;">?</div>
+      </div>
+    </header>
+
+    <main class="content-area" id="app-content">
+
+<!-- ===================== DASHBOARD ===================== -->
+<section class="view active" id="view-dashboard">
+  <div class="wrap">
+    <div class="view-head">
+      <p class="eyebrow">Bestlink College of the Philippines</p>
+      <h2>Digital Career Transition Platform</h2>
+      <p>Five working tools to help you assess, practice, and plan your move from student to professional. Your progress is saved in this browser only, so it stays private to this device.</p>
+      <span class="note">Prototype build  no server, Data lives in this browser only.</span>
+    </div>
+    <div class="card dashboard-welcome" id="dashboard-welcome"></div>
+
+    <div class="dash-top-row">
+      <div class="stat-grid" id="dashboard-stats"></div>
+      <div class="card dash-banner" id="dashboard-banner"></div>
+    </div>
+
+    <div class="dash-main-row">
+      <div class="card chart-card-main" id="dashboard-chart-main"></div>
+      <div class="card" id="recent-activity"></div>
+    </div>
+
+    <div class="dash-mid-row">
+      <div class="card" id="weekly-goals-card"></div>
+      <div class="card quick-actions-card">
+        <div class="panel-head"><h3>Quick Actions</h3></div>
+        <div class="quick-actions" id="quick-actions"></div>
+      </div>
+      <div class="card" id="career-tips-card"></div>
+    </div>
+
+    <div class="dash-bottom-row">
+      <div class="card" id="achievements-card"></div>
+      <div class="card" id="checkin-card">
+        <div class="panel-head"><h3>Mood Check-in</h3></div>
+        <p class="panel-sub" style="margin-bottom:14px;">How are you feeling today?</p>
+        <div class="mood-picker" id="mood-picker"></div>
+        <div id="checkin-response" style="display:none;"></div>
+      </div>
+      <div class="card dashboard-quote" id="dashboard-quote"></div>
+    </div>
+
+    <div class="dash-bottom-row2">
+      <div class="card" id="streak-widget-card"></div>
+      <div class="card" id="tasks-widget-card"></div>
+      <div class="card" id="recommend-widget-card"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== ASSESSMENT ===================== -->
+<section class="view" id="view-assessment">
+  <div class="wrap">
+    <div class="assess-header">
+      <div class="view-head" style="margin-bottom:0;">
+        <p class="eyebrow">Self-Assessment · Bestlink College of the Philippines</p>
+        <h2>Career Readiness Assessment</h2>
+        <p>Answer honestly — there's no passing or failing score here, only a clearer picture of where to focus next.</p>
+      </div>
+      <div class="assess-header-meta">
+        <span class="meta-chip"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l2.6 2.6"/></svg> ~6 min</span>
+        <span class="meta-chip"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="12" height="12" rx="2.5"/><path d="M6.5 9h5M6.5 12h3"/></svg> 15 questions</span>
+        <span class="meta-chip"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h3l2-5 3 10 2-5h3"/></svg> 3 focus areas</span>
+      </div>
+    </div>
+
+    <div class="assess-stat-row" id="assess-stat-row">
+      <div class="assess-stat-card">
+        <span class="assess-stat-label">Questions answered</span>
+        <span class="assess-stat-value" id="assess-stat-answered">0<small>/15</small></span>
+      </div>
+      <div class="assess-stat-card">
+        <span class="assess-stat-label">Remaining</span>
+        <span class="assess-stat-value" id="assess-stat-remaining">15</span>
+      </div>
+      <div class="assess-stat-card">
+        <span class="assess-stat-label">Estimated time left</span>
+        <span class="assess-stat-value" id="assess-stat-time">~2 min</span>
+      </div>
+      <div class="assess-stat-card assess-stat-card-accent">
+        <span class="assess-stat-label">Overall progress</span>
+        <span class="assess-stat-value" id="assess-stat-percent">0%</span>
+      </div>
+    </div>
+
+    <div class="assess-layout" id="assess-layout">
+      <div class="card" id="assess-form-card">
+        <form id="assess-form"></form>
+        <button class="btn btn-primary btn-assess-submit" id="assess-submit" type="button">See my results</button>
+      </div>
+
+      <aside class="assess-sidebar" id="assess-sidebar">
+        <div class="card assess-progress-card">
+          <h3 style="font-size:1.02rem; margin-bottom:2px;">Your progress</h3>
+          <div class="assess-ring-row">
+            <div class="ring-holder" id="assess-live-ring"></div>
+            <div>
+              <p class="panel-sub" id="assess-progress-text" style="margin-bottom:0;">0 of 0 answered</p>
+              <p class="panel-sub" id="assess-time-left" style="margin-bottom:0;"></p>
+            </div>
+          </div>
+          <div class="bar-track" style="margin-top:14px;"><div class="bar-fill" id="assess-progress-fill" style="width:0%;"></div></div>
+        </div>
+
+        <div class="card assess-category-card">
+          <h3 style="font-size:1.02rem; margin-bottom:14px;">Category progress</h3>
+          <div id="assess-category-bars"></div>
+        </div>
+
+        <div class="card assess-motivation-card" id="assess-motivation-card">
+          <span class="assess-motivation-emoji">✦</span>
+          <p id="assess-motivation-text">Take your time — every answer sharpens the picture.</p>
+        </div>
+
+        <div class="card assess-info-card">
+          <h3 style="font-size:1.02rem; margin-bottom:12px;">What this measures</h3>
+          <ul class="tip-list">
+            <li><strong>Communication</strong> — how clearly you express yourself in a professional setting.</li>
+            <li><strong>Problem Solving</strong> — how you approach and break down challenges.</li>
+            <li><strong>Confidence</strong> — how ready you feel to put yourself forward.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <div id="assess-result" class="card">
+      <div class="result-banner">
+        <div class="ring-holder" id="assess-ring"></div>
+        <div class="result-text">
+          <h3 id="assess-level"></h3>
+          <p id="assess-summary"></p>
+        </div>
+      </div>
+      <div id="assess-bars"></div>
+      <div class="assess-result-actions">
+        <button class="btn btn-secondary" id="assess-retake" type="button">Retake assessment</button>
+        <button class="btn btn-ghost" id="assess-download" type="button">Download results</button>
+        <button class="btn btn-ghost" id="assess-print" type="button">Print results</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INTERVIEW ===================== -->
+<section class="view" id="view-interview">
+  <div class="wrap">
+    <div class="assess-header">
+      <div class="view-head" style="margin-bottom:0;">
+        <p class="eyebrow">Practice Mode · Rule-Based Feedback</p>
+        <h2>Mock Interview Simulator</h2>
+        <p>Pick a track, answer five questions, and get instant structural feedback on your responses.</p>
+      </div>
+      <div class="assess-header-meta">
+        <span class="meta-chip"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l2.6 2.6"/></svg> ~10 min</span>
+        <span class="meta-chip"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="12" height="12" rx="2.5"/><path d="M6.5 9h5M6.5 12h3"/></svg> 5 questions</span>
+        <span class="meta-chip"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v12h12"/><path d="M5.5 11l2.5-3 2 2 3.5-4.5"/></svg> Offline · rule-based</span>
+      </div>
+    </div>
+
+    <div class="assess-stat-row" id="interview-stat-row">
+      <div class="assess-stat-card">
+        <span class="assess-stat-label">Completed sessions</span>
+        <span class="assess-stat-value" id="iv-stat-sessions">0</span>
+      </div>
+      <div class="assess-stat-card">
+        <span class="assess-stat-label">Best score</span>
+        <span class="assess-stat-value" id="iv-stat-best">—</span>
+      </div>
+      <div class="assess-stat-card">
+        <span class="assess-stat-label">Average score</span>
+        <span class="assess-stat-value" id="iv-stat-avg">—</span>
+      </div>
+      <div class="assess-stat-card assess-stat-card-accent">
+        <span class="assess-stat-label">Most practiced track</span>
+        <span class="assess-stat-value" id="iv-stat-track" style="font-size:1.05rem;">—</span>
+      </div>
+    </div>
+
+    <div class="interview-layout">
+        <div class="interview-main">
+          <div class="card" id="interview-picker-card">
+            <div class="interview-mode-selector" role="group" aria-label="Interview mode">
+              <button class="interview-mode active" type="button" data-interview-mode="standard">Standard mock interview</button>
+              <button class="interview-mode" type="button" data-interview-mode="phone">Phone interview simulation</button>
+            </div>
+            <p class="panel-sub" id="interview-mode-description">Practice written responses and receive structured, rule-based feedback.</p>
+            <label style="margin-bottom:12px;">Choose an interview track</label>
+          <div class="track-picker" id="track-picker"></div>
+          <div class="interview-info-strip" id="interview-info-strip">
+            <div><span class="info-strip-label">Selected track</span><span class="info-strip-value" id="iv-info-track">None yet</span></div>
+            <div><span class="info-strip-label">Questions</span><span class="info-strip-value">5</span></div>
+            <div><span class="info-strip-label">Est. time</span><span class="info-strip-value">~10 min</span></div>
+            <div><span class="info-strip-label">Status</span><span class="info-strip-value" id="iv-info-status">Waiting for selection</span></div>
+          </div>
+
+          <button class="btn btn-primary btn-assess-submit" id="interview-start" type="button" disabled>Start mock interview</button>
+        </div>
+
+        <!-- Phone Interview Simulator: a sibling mode so it remains visible after the setup card is hidden. -->
+        <div class="card phone-call-card" id="phone-incoming-card" style="display:none;">
+          <div class="phone-call-visual" aria-hidden="true"><span>☎</span></div>
+          <p class="eyebrow">Incoming recruiter call</p>
+          <h3 id="phone-company">BrightPath Technologies</h3>
+          <p id="phone-recruiter">Maya Santos · Talent Acquisition</p>
+          <p class="panel-sub" id="phone-role">Phone screening for your selected track</p>
+          <div class="phone-call-actions"><button class="phone-action decline" id="phone-decline" type="button">Decline</button><button class="phone-action accept" id="phone-accept" type="button">Accept call</button></div>
+        </div>
+
+        <!-- Connecting transition: brief hand-off between Accept and the live session so the call feels real. -->
+        <div class="card phone-call-card phone-connecting-card" id="phone-connecting-card" style="display:none;" role="status" aria-live="polite">
+          <div class="phone-call-visual phone-connecting-visual" aria-hidden="true"><span>📞</span></div>
+          <p class="eyebrow">Connecting…</p>
+          <h3 id="phone-connecting-label">Dialing</h3>
+          <p class="panel-sub">Please wait while we connect your call.</p>
+        </div>
+
+        <div class="card phone-session-card" id="phone-session" style="display:none;">
+          <div class="phone-session-head"><div><span class="phone-status"><i></i> Connected</span><h3 id="phone-session-recruiter">Maya Santos</h3><p id="phone-session-role" class="panel-sub"></p></div><div class="phone-timer" id="phone-timer">00:00</div></div>
+          <div class="phone-progress-row"><span id="phone-question-counter">Question 1 of 5</span><div class="phone-progress-track"><div id="phone-progress-fill"></div></div></div>
+          <div class="phone-script" id="phone-script" aria-live="polite"></div>
+          <div class="phone-response-tools"><button class="btn btn-secondary" id="phone-record" type="button">Start listening</button><div class="phone-waveform" id="phone-waveform" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div><span class="phone-mic-state" id="phone-mic-state" role="status" aria-live="polite">Preparing the call…</span></div>
+          <div class="field"><textarea id="phone-answer" rows="5" placeholder="Type your response here, or use the microphone when supported."></textarea></div>
+          <div class="phone-transcript" id="phone-transcript" style="display:none;"></div>
+          <button class="btn btn-primary" id="phone-submit" type="button">Submit response</button><button class="btn btn-secondary" id="phone-next" type="button" style="display:none;">Next question →</button><button class="btn btn-ghost" id="phone-end" type="button">End call</button>
+          <div class="feedback-box" id="phone-feedback"></div>
+        </div>
+
+        <div class="card" id="phone-summary" style="display:none;">
+          <div class="result-banner"><div class="ring-holder" id="phone-summary-ring"></div><div class="result-text"><h3 id="phone-summary-title">Phone Interview Summary</h3><p id="phone-summary-note"></p><span class="phone-confidence-badge" id="phone-confidence-badge"></span></div></div>
+          <div class="stat-grid" id="phone-summary-stats" style="margin:20px 0;"></div>
+          <div class="card iv-breakdown-card" id="phone-summary-improvements">
+            <h3 style="font-size:0.96rem; margin-bottom:12px;">Suggested Improvements</h3>
+            <ul class="tip-list" id="phone-summary-tips"></ul>
+          </div>
+          <div id="phone-summary-answers"></div>
+          <div class="assess-result-actions"><button class="btn btn-primary" id="phone-practice-again" type="button">Practice another call</button><button class="btn btn-ghost" id="phone-back-standard" type="button">Back to interview modes</button></div>
+        </div>
+
+        <div class="card" id="interview-session">
+          <p class="q-counter" id="q-counter"></p>
+          <p class="q-text" id="q-text"></p>
+          <div class="field">
+            <textarea id="q-answer" placeholder="Type your answer here..." rows="5"></textarea>
+          </div>
+          <button class="btn btn-primary" id="q-submit" type="button">Submit answer</button>
+          <button class="btn btn-secondary" id="q-next" type="button" style="display:none;">Next question →</button>
+          <div class="feedback-box" id="q-feedback"></div>
+        </div>
+
+        <div class="card" id="interview-summary">
+          <div class="result-banner">
+            <div class="ring-holder" id="interview-ring"></div>
+            <div class="result-text">
+              <h3 style="font-size:1.3rem;">Session summary</h3>
+            </div>
+          </div>
+          <div class="card iv-breakdown-card" id="iv-breakdown-card">
+            <h3 style="font-size:0.96rem; margin-bottom:12px;">Answer quality breakdown</h3>
+            <div id="iv-breakdown-bars"></div>
+          </div>
+          <div id="summary-rows"></div>
+          <div class="assess-result-actions">
+            <button class="btn btn-secondary" id="interview-restart" type="button">Practice again</button>
+            <button class="btn btn-ghost" id="interview-download" type="button">Download report</button>
+          </div>
+        </div>
+
+        <div class="card" id="interview-faq-card">
+          <h3 style="font-size:1.02rem; margin-bottom:6px;">Common Interview Questions</h3>
+          <p class="panel-sub">A quick reference — no need to memorize word-for-word, just know your key points.</p>
+          <div class="faq-accordion" id="interview-faq-accordion"></div>
+        </div>
+      </div>
+
+      <aside class="interview-sidebar">
+        <div class="card">
+          <h3 style="font-size:1.02rem; margin-bottom:2px;">Performance Trend</h3>
+          <p class="panel-sub">Your last few session scores</p>
+          <div id="iv-trend-chart"></div>
+        </div>
+
+        <div class="card" id="iv-readiness-card">
+          <h3 style="font-size:1.02rem; margin-bottom:12px;">Overall Readiness</h3>
+          <div class="assess-ring-row">
+            <div class="ring-holder" id="iv-readiness-ring"></div>
+            <div>
+              <p class="panel-sub" id="iv-readiness-text" style="margin-bottom:0;">No sessions yet</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="iv-recommend-card">
+          <h3 style="font-size:1.02rem; margin-bottom:10px;">AI Recommendation</h3>
+          <div id="iv-recommend-body"></div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1.02rem; margin-bottom:2px;">Recent Sessions</h3>
+          <p class="panel-sub">Your last few practice runs</p>
+          <div id="interview-history-list"></div>
+        </div>
+
+        <div class="card" id="iv-achievements-card">
+          <h3 style="font-size:1.02rem; margin-bottom:12px;">Achievements</h3>
+          <div id="iv-achievements-badges"></div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1.02rem; margin-bottom:12px;">Quick Tips</h3>
+          <ul class="tip-list" id="interview-quick-tips"></ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RESUME CHECKER ===================== -->
+<section class="view" id="view-checker">
+  <div class="wrap">
+    <div class="view-head">
+      <p class="eyebrow"></p>
+      <h2>Resume Checker</h2>
+      <p>Upload your resume as a PDF or Word (.docx) file. Everything is read and analyzed right here in your browser — your file is never uploaded anywhere.</p>
+    </div>
+
+    <div class="checker-layout">
+      <div class="card">
+        <label class="upload-box" id="upload-box" for="checker-file">
+          <input type="file" id="checker-file" accept=".pdf,.docx">
+          <div class="upload-label">Click to choose a file, or drag it here</div>
+          <div class="upload-sub">PDF or .docx only — old .doc files aren't supported yet</div>
+        </label>
+        <div id="file-chip-holder"></div>
+        <p id="checker-status"></p>
+        <button class="btn btn-primary" id="checker-analyze" type="button" style="margin-top:16px;" disabled>Check my resume</button>
+
+        <details id="extracted-text-box" style="display:none;">
+          <summary>View extracted text (to confirm it read your file correctly)</summary>
+          <pre id="extracted-text"></pre>
+        </details>
+      </div>
+
+      <div class="card checker-info-card" id="checker-info-card">
+        <h3 style="font-size:1.02rem; margin-bottom:12px;">What we check</h3>
+        <ul class="tip-list">
+          <li><strong>ATS Format Compliance</strong> — the top priority, since a resume a machine can't parse never reaches a human.</li>
+          <li><strong>Contact Information</strong> — email and phone number are easy to find.</li>
+          <li><strong>Section Completeness</strong> — education, experience, and skills are present.</li>
+          <li><strong>Action Verbs &amp; Quantifiable Results</strong> — specific, measurable impact.</li>
+          <li><strong>Formatting</strong> — capitalization and pronoun use read like a resume.</li>
+        </ul>
+        <p class="panel-sub" style="margin-bottom:0;">Everything runs locally in your browser — your file is never uploaded anywhere.</p>
+      </div>
+    </div>
+
+    <div class="card" id="checker-results">
+      <div class="result-banner">
+        <div class="ring-holder" id="checker-ring"></div>
+        <div class="result-text">
+          <h3 id="checker-level"></h3>
+          <p id="checker-overall-summary"></p>
+        </div>
+      </div>
+      <div id="checker-bars" style="margin-bottom:10px;"></div>
+      <div id="checker-findings"></div>
+      <button class="btn btn-secondary" id="checker-reset" type="button" style="margin-top:10px;">Check another file</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== JOB TRACKER ===================== -->
+<section class="view" id="view-tracker">
+  <div class="wrap">
+    <div class="view-head">
+      <p class="eyebrow">Track Your Search</p>
+      <h2>Job Application Tracker</h2>
+      <p>Log every company you apply to, track where each one stands, and spot patterns  like whether it's your resume, or just a numbers game.</p>
+    </div>
+
+    <div class="stat-grid" id="tracker-stats" style="margin-bottom:32px;"></div>
+
+    <div class="tracker-layout">
+      <div class="card" style="overflow-x:auto;">
+        <table id="tracker-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Position</th>
+              <th>Status</th>
+              <th>Date Applied</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tracker-rows"></tbody>
+        </table>
+        <button class="btn btn-ghost" id="tracker-add" type="button" style="margin-top:16px;">+ Add application</button>
+      </div>
+
+      <aside class="tracker-sidebar">
+        <div class="card">
+          <h3 style="font-size:1.02rem; margin-bottom:12px;">Insights</h3>
+          <div id="tracker-insights"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WORKPLACE TYPING SIMULATOR ===================== -->
+<section class="view" id="view-typing">
+  <div class="wrap">
+    <div class="view-head">
+      <p class="eyebrow">Career Readiness · Bestlink College of the Philippines</p>
+      <h2>Workplace Typing Simulator</h2>
+      <p>Improve your typing speed and accuracy through real workplace scenarios — not random paragraphs.</p>
+    </div>
+
+    <div class="stat-grid" id="typing-stats" style="margin-bottom:28px;"></div>
+
+    <!-- ---------- SETUP STAGE ---------- -->
+    <div class="card" id="typing-setup-card">
+      <div class="panel-head"><h3>Simulation Setup</h3></div>
+      <p class="panel-sub" style="margin-bottom:18px;">Pick an industry and settings that match the role you're preparing for.</p>
+
+      <div class="typing-setup-group">
+        <span class="typing-setup-label">Industry</span>
+        <div class="pill-group" id="typing-industry-pills"></div>
+      </div>
+      <div class="typing-setup-group">
+        <span class="typing-setup-label">Difficulty</span>
+        <div class="pill-group" id="typing-difficulty-pills"></div>
+      </div>
+      <div class="typing-setup-row">
+        <div class="typing-setup-group">
+          <span class="typing-setup-label">Practice Duration</span>
+          <div class="pill-group" id="typing-duration-pills"></div>
+        </div>
+        <div class="typing-setup-group">
+          <span class="typing-setup-label">Text Length</span>
+          <div class="pill-group" id="typing-length-pills"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="typing-generate" type="button" style="margin-top:8px;">Generate Workplace Simulation</button>
+    </div>
+
+    <!-- ---------- SCENARIO BRIEF ---------- -->
+    <div class="card typing-scenario-card" id="typing-scenario-card" style="display:none;">
+      <div class="typing-scenario-tag" id="typing-scenario-industry-tag"></div>
+      <h3 id="typing-scenario-title" style="margin-top:10px; font-size:1.15rem;"></h3>
+      <div class="typing-scenario-block">
+        <span class="typing-scenario-label">Workplace Situation</span>
+        <p id="typing-scenario-situation"></p>
+      </div>
+      <div class="typing-scenario-block">
+        <span class="typing-scenario-label">Task</span>
+        <p id="typing-scenario-task"></p>
+      </div>
+      <button class="btn btn-secondary" id="typing-begin" type="button">Start Workplace Simulation</button>
+    </div>
+
+    <!-- ---------- TYPING AREA ---------- -->
+    <div class="card typing-arena-card" id="typing-arena-card" style="display:none;">
+      <div class="typing-arena-head">
+        <div class="typing-timer" id="typing-timer">60s</div>
+        <div class="typing-progress-track"><div class="typing-progress-fill" id="typing-progress-fill"></div></div>
+        <div class="typing-remaining" id="typing-remaining-chars"></div>
+      </div>
+
+      <div class="typing-live-stats" id="typing-live-stats"></div>
+
+      <div class="typing-text-display" id="typing-text-display" tabindex="0"></div>
+      <textarea class="typing-input" id="typing-input" rows="3" placeholder="Click here and begin the workplace simulation…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+
+      <div style="margin-top:14px;">
+        <button class="btn btn-ghost" id="typing-restart" type="button">Restart simulation</button>
+      </div>
+    </div>
+
+    <!-- ---------- RESULT ---------- -->
+    <div class="card" id="typing-result-card" style="display:none;">
+      <div class="result-banner">
+        <div class="ring-holder" id="typing-result-ring"></div>
+        <div class="result-text">
+          <h3 id="typing-result-level"></h3>
+          <p id="typing-result-feedback"></p>
+        </div>
+      </div>
+      <div class="stat-grid" id="typing-result-stats" style="margin:20px 0;"></div>
+      <div class="typing-career-connection" id="typing-career-connection"></div>
+      <div class="typing-result-actions">
+        <button class="btn btn-primary" id="typing-practice-again" type="button">Run another simulation</button>
+        <button class="btn btn-secondary" id="typing-change-industry" type="button">Change Industry</button>
+        <button class="btn btn-ghost" id="typing-view-progress" type="button">View Progress</button>
+        <button class="btn btn-ghost" id="typing-return-dashboard" type="button">Return to Dashboard</button>
+      </div>
+    </div>
+
+    <!-- ---------- PERFORMANCE CHART ---------- -->
+    <div class="card chart-card-main" id="typing-chart-card" style="margin-top:24px;">
+      <div class="chart-card-head-row"><h3>Performance Over Time</h3></div>
+      <canvas id="typing-chart" height="90"></canvas>
+      <p class="panel-sub" id="typing-chart-empty" style="margin-top:10px;">Complete a workplace simulation to start tracking your progress.</p>
+    </div>
+
+    <!-- ---------- HISTORY + ACHIEVEMENTS ---------- -->
+    <div class="grid-2" style="margin-top:24px;">
+      <div class="card" style="overflow-x:auto;">
+        <div class="panel-head"><h3>Simulation History</h3></div>
+        <table id="typing-history-table">
+          <thead>
+            <tr>
+              <th>Industry</th>
+              <th>Difficulty</th>
+              <th>WPM</th>
+              <th>Accuracy</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="typing-history-rows"></tbody>
+        </table>
+        <p class="panel-sub" id="typing-history-empty" style="margin-top:14px;">No simulations yet — completed workplace simulations will show up here.</p>
+      </div>
+      <div class="card">
+        <div class="panel-head"><h3>Achievements</h3></div>
+        <div class="badge-grid" id="typing-achievements"></div>
+      </div>
+    </div>
+
+    <div class="card dashboard-quote" id="typing-motivation" style="margin-top:24px;"></div>
+  </div>
+</section>
+
+<!-- ===================== WELLNESS CORNER ===================== -->
+<section class="view" id="view-wellness">
+  <div class="wrap">
+    <div class="view-head">
+      <p class="eyebrow">A Space to Breathe</p>
+      <h2>Wellness Corner</h2>
+      <p>Job searching is hard on more than your schedule. This corner is here for the moments it gets to you too.</p>
+    </div>
+
+    <div class="card wellness-reminder" style="margin-bottom:24px;">
+      <p class="reminder-text">🌿 It's okay to rest. You don't have to rush, and you don't have to prove your worth by how fast you bounce back. Progress at your own pace still counts as progress.</p>
+    </div>
+
+    <div class="card" id="wellness-week-card" style="margin-bottom:24px;">
+      <h3 style="font-size:1.1rem; margin-bottom:4px;">Your Week</h3>
+      <p style="color:var(--ink-soft); font-size:0.9rem; margin-bottom:16px;">Check-ins from the last 7 days.</p>
+      <div id="wellness-week-strip"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="font-size:1.1rem; margin-bottom:6px;">Quick Breathing Guide</h3>
+        <p style="color:var(--ink-soft); font-size:0.9rem; margin-bottom:18px;">A 4-4-4 breathing cycle  inhale, hold, exhale. One minute is enough to reset.</p>
+        <div class="breathing-holder">
+          <div class="breathing-circle" id="breathing-circle"><span id="breathing-text">Start</span></div>
+        </div>
+        <button class="btn btn-secondary" id="breathing-start" type="button" style="margin-top:18px; width:100%; text-align:center;">Start breathing exercise</button>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:1.1rem; margin-bottom:14px;">Confidence Tips</h3>
+        <ul class="tip-list" id="confidence-tips"></ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <h3 style="font-size:1.1rem; margin-bottom:6px;">Reframe a Hard Thought</h3>
+      <p style="color:var(--ink-soft); font-size:0.9rem; margin-bottom:16px;">Tap a thought that sounds familiar to see it from another angle.</p>
+      <div id="reframe-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ACCOUNT PROFILE ===================== -->
+<section class="view" id="view-profile">
+  <div class="wrap" style="max-width:640px;">
+    <div class="view-head">
+      <p class="eyebrow">Your Account</p>
+      <h2>Account Profile</h2>
+      <p>Update the information tied to your account.</p>
+    </div>
+
+    <div class="card" style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
+      <div class="topbar-avatar" id="profile-avatar" style="width:56px; height:56px; font-size:1.3rem;">?</div>
+      <div>
+        <p style="font-weight:600;" id="profile-header-name">—</p>
+        <p style="color:var(--ink-soft); font-size:0.88rem;" id="profile-header-email">—</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <h3 style="font-size:1.02rem; margin-bottom:14px;">Profile Details</h3>
+      <div class="field">
+        <label for="profile-fullname">Full name</label>
+        <input type="text" id="profile-fullname" placeholder="Your full name">
+      </div>
+      <p id="profile-details-status" style="font-size:0.85rem; min-height:18px; margin-bottom:4px;"></p>
+      <button class="btn btn-primary" id="profile-save-details" type="button">Save changes</button>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <h3 style="font-size:1.02rem; margin-bottom:4px;">Email Address</h3>
+      <p style="color:var(--ink-soft); font-size:0.85rem; margin-bottom:14px;">Changing your email requires confirmation through a link sent to the new address.</p>
+      <div class="field">
+        <label for="profile-new-email">New email</label>
+        <input type="text" id="profile-new-email" placeholder="you@email.com">
+      </div>
+      <p id="profile-email-status" style="font-size:0.85rem; min-height:18px; margin-bottom:4px;"></p>
+      <button class="btn btn-secondary" id="profile-save-email" type="button">Update email</button>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:1.02rem; margin-bottom:4px;">Password</h3>
+      <p style="color:var(--ink-soft); font-size:0.85rem; margin-bottom:14px;">Choose a new password for your account.</p>
+      <div class="field">
+        <label for="profile-new-password">New password</label>
+        <input type="text" id="profile-new-password" placeholder="At least 6 characters" style="-webkit-text-security:disc;">
+      </div>
+      <div class="field">
+        <label for="profile-confirm-password">Confirm new password</label>
+        <input type="text" id="profile-confirm-password" placeholder="Re-enter new password" style="-webkit-text-security:disc;">
+      </div>
+      <p id="profile-password-status" style="font-size:0.85rem; min-height:18px; margin-bottom:4px;"></p>
+      <button class="btn btn-secondary" id="profile-save-password" type="button">Update password</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="eyebrow">Digital Career Transition Platform</p>
+    <p class="small">A student research initiative Bestlink College of the Philippines</p>
+  </div>
+</footer>
+
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.11.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="script.js"></Script>
+</body>
+</html>
